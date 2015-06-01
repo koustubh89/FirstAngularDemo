@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="scripts/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="personCtrl">
+  <form>
+    First Name:<br>
+    <input type="text" ng-model="person.firstName"><br>
+    Last Name:<br>
+    <input type="text" ng-model="person.lastName">
+    <br>
+	Country: <select id="country" ng-model="person.states" ng-options="country for (country, states) in countries">
+                    <option value=''>Select</option>
+             </select>
+	<br>
+	States: <select id="state" ng-disabled="!person.states" ng-model="person.cities" ng-options="state for (state,city) in person.states"><option value=''>Select</option></select>
+    <br>
+	City: <select id="city" ng-disabled="!person.cities || !person.states" ng-model="person.city"><option value=''>Select</option> <option ng-repeat="city in person.cities" value='{{city}}'>{{city}}</option></select>        
+    <br>
+	Date: <select id="day" ng-model="person.day" ng-options="days" ng-options="day for day in days">
+                    <option value=''></option>
+             </select>
+			 <select id="month" ng-model="person.month">
+					<option value=''>Select</option>
+                    <option value='01'>JAN</option>
+					<option value='02'>FEB</option>
+					<option value='03'>MAR</option>
+             </select>
+			 <select id="year" ng-model="person.year" ng-options="years">
+                    <option value=''>Select</option>
+             </select>
+	<br>
+    <button ng-click="save()">save</button>
+    <button ng-click="reset()">reset</button>
+  </form>
+  <p>{{details}}</p>
+</div>
+
+<script>
+// for chacking changes
+var app = angular.module('myApp', []);
+app.controller('personCtrl', function($scope) {
+       	$scope.save = function() {
+        $scope.details = $scope.person.firstName +" " + $scope.person.lastName + " " + $scope.person.city + " "+ $scope.person.month;
+        };
+        $scope.reset = function() {
+        $scope.person = angular.copy($scope.master);
+        $scope.details =" "
+        };
+        $scope.countries = {
+            'India': {
+                    'Maharashtra': ['Pune', 'Mumbai', 'Nagpur', 'Akola'],
+                    'Madhya Pradesh': ['Indore', 'Bhopal', 'Jabalpur'],
+					'Rajasthan': ['Jaipur', 'Ajmer', 'Jodhpur']
+                    },
+            'USA': {
+                    'Alabama': ['Montgomery', 'Birmingham'],
+                    'California': ['Sacramento', 'Fremont'],
+                    'Illinois': ['Springfield', 'Chicago']
+                    },
+            'Australia': {
+                    'New South Wales': ['Sydney'],
+                    'Victoria': ['Melbourne']
+                    }
+             };
+        $scope.days = [01,02,03,04];
+		$scope.months = ['Jan','Feb','Mar','Apr'];
+		$scope.years = [1990,1991,1992,1993];
+});
+</script>
+
+</body>
+</html>
